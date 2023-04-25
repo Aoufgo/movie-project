@@ -1,0 +1,37 @@
+# spring 配置
+spring:
+  # 数据源配置
+  datasource:
+    # JDBC驱动类签名
+    driverClassName: com.mysql.cj.jdbc.Driver
+    # 连接数据库URL路径
+    url:
+    # 数据库账户名称
+    username:
+    # 数据库账户密码
+    password:
+    # 获取Connection连接对象的类签名
+    type: com.alibaba.druid.pool.DruidDataSource
+    # Redis配置
+  redis:
+    # Redis部署Ip地址
+    host:
+    # Redis监听端口
+    port:
+    # Redis登录密码
+    password:
+# mybatis配置
+mybatis:
+  # 映射文件表达式
+  mapper-locations: classpath:mapper/*Mapper.xml
+# mybatis-plus 配置信息
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+# 自定 设置sms参数
+ali-sms:
+  access-key-id:
+  access-key-secret:
+  endpoint:
+  sign-name:
+  register-template-code:
