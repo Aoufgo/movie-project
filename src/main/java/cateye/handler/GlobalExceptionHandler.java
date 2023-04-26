@@ -13,6 +13,9 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 import javax.validation.ConstraintViolationException;
 import javax.validation.ValidationException;
 
+/**
+ * Restful全局异常处理
+ */
 @RestControllerAdvice
 public class GlobalExceptionHandler {
     private static int DUPLICATE_KEY_CODE = 1001;

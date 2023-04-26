@@ -1,5 +1,6 @@
 package cateye.controller;
 
+import cateye.bean.bo.UserLoginBo;
 import cateye.bean.bo.UserRegisterBo;
 import cateye.response.ResultResponse;
 import cateye.service.IUserService;
@@ -34,6 +35,21 @@ public class UserController {
             return ResultResponse.failure(502,"该手机号已注册过账户");
         }else{
             return ResultResponse.failure(500,"系统错误");
+        }
+    }
+
+    /**
+     * 用户登录
+     * @param userLoginBo 登录业务模型
+     * @return 响应报文
+     */
+    @PostMapping("/login")
+    public Object login(@Valid UserLoginBo userLoginBo){
+        String token = userService.login(userLoginBo);
+        if (token == null){
+            return ResultResponse.failure(501,"用户名或密码错误!");
+        } else {
+            return ResultResponse.success(token);
         }
     }
 }

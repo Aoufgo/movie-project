@@ -49,7 +49,7 @@ public final class RedisUtils {//帮助类工具类，去操作redis的对象
      * @param key 键(不能为 Null)
      * @return true 存在 false 不存在
      */
-    public boolean hashKey(String key) {
+    public boolean hasKey(String key) {
         try {
             return redisTemplate.hasKey(key);
         } catch (Exception e) {
