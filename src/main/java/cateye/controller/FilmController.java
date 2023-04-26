@@ -2,6 +2,7 @@ package cateye.controller;
 
 import cateye.response.ResultResponse;
 import cateye.service.impl.CategoryService;
+import cateye.service.impl.FilmRegionService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,6 +17,8 @@ import java.util.Map;
 public class FilmController {
     @Resource
     private CategoryService categoryService;
+    @Resource
+    private FilmRegionService filmRegionService;
     /**
      * 影片列表接口
      * @return 响应
@@ -26,11 +29,10 @@ public class FilmController {
         // 获取类型列表
         data.put("categoryList",categoryService.selectAll());
         // 获取拍摄地列表
-        data.put("regionList", null);
+        data.put("regionList", filmRegionService.selectAll());
         // 获取影片列表
         data.put("filmList", null );
         return ResultResponse.success(data);
-
     }
 
 }

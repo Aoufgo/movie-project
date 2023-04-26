@@ -1,5 +1,7 @@
 package cateye.utils;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
@@ -9,7 +11,8 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @Component
-public final class RedisUtils {//帮助类工具类，去操作redis的对象
+public final class RedisUtils {
+    Logger logger = LoggerFactory.getLogger(RedisUtils.class);
 
     @Resource
     private RedisTemplate<String, Object> redisTemplate;
@@ -28,7 +31,7 @@ public final class RedisUtils {//帮助类工具类，去操作redis的对象
             }
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
             return false;
         }
     }
@@ -53,7 +56,7 @@ public final class RedisUtils {//帮助类工具类，去操作redis的对象
         try {
             return redisTemplate.hasKey(key);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
             return false;
         }
     }
@@ -96,7 +99,7 @@ public final class RedisUtils {//帮助类工具类，去操作redis的对象
             redisTemplate.opsForValue().set(key, value);
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
             return false;
         }
     }
@@ -118,7 +121,7 @@ public final class RedisUtils {//帮助类工具类，去操作redis的对象
             }
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
             return false;
         }
     }
@@ -225,7 +228,7 @@ public final class RedisUtils {//帮助类工具类，去操作redis的对象
             redisTemplate.opsForHash().putAll(key, map);
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
             return false;
         }
     }
@@ -247,7 +250,7 @@ public final class RedisUtils {//帮助类工具类，去操作redis的对象
             }
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
             return false;
         }
     }
@@ -266,7 +269,7 @@ public final class RedisUtils {//帮助类工具类，去操作redis的对象
             redisTemplate.opsForHash().put(key, item, value);
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
             return false;
         }
     }
@@ -288,7 +291,7 @@ public final class RedisUtils {//帮助类工具类，去操作redis的对象
             }
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
             return false;
         }
     }
@@ -352,7 +355,7 @@ public final class RedisUtils {//帮助类工具类，去操作redis的对象
         try {
             return redisTemplate.opsForSet().members(key);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
             return null;
         }
     }
@@ -369,7 +372,7 @@ public final class RedisUtils {//帮助类工具类，去操作redis的对象
         try {
             return redisTemplate.opsForSet().isMember(key, value);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
             return false;
         }
     }
@@ -386,7 +389,7 @@ public final class RedisUtils {//帮助类工具类，去操作redis的对象
         try {
             return redisTemplate.opsForSet().add(key, values);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
             return 0;
         }
     }
@@ -408,7 +411,7 @@ public final class RedisUtils {//帮助类工具类，去操作redis的对象
             }
             return count;
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
             return 0;
         }
     }
@@ -423,7 +426,7 @@ public final class RedisUtils {//帮助类工具类，去操作redis的对象
         try {
             return redisTemplate.opsForSet().size(key);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
             return 0;
         }
     }
@@ -442,7 +445,7 @@ public final class RedisUtils {//帮助类工具类，去操作redis的对象
             Long count = redisTemplate.opsForSet().remove(key, values);
             return count;
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
             return 0;
         }
     }
@@ -460,7 +463,7 @@ public final class RedisUtils {//帮助类工具类，去操作redis的对象
         try {
             return redisTemplate.opsForList().range(key, start, end);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
             return null;
         }
     }
@@ -475,7 +478,7 @@ public final class RedisUtils {//帮助类工具类，去操作redis的对象
         try {
             return redisTemplate.opsForList().size(key);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
             return 0;
         }
     }
@@ -491,7 +494,7 @@ public final class RedisUtils {//帮助类工具类，去操作redis的对象
         try {
             return redisTemplate.opsForList().index(key, index);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
             return null;
         }
     }
@@ -508,7 +511,7 @@ public final class RedisUtils {//帮助类工具类，去操作redis的对象
             redisTemplate.opsForList().rightPush(key, value);
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
             return false;
         }
     }
@@ -529,7 +532,7 @@ public final class RedisUtils {//帮助类工具类，去操作redis的对象
             }
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
             return false;
         }
 
@@ -548,7 +551,7 @@ public final class RedisUtils {//帮助类工具类，去操作redis的对象
             redisTemplate.opsForList().rightPushAll(key, value);
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
             return false;
         }
 
@@ -571,7 +574,7 @@ public final class RedisUtils {//帮助类工具类，去操作redis的对象
             }
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
             return false;
         }
     }
@@ -591,7 +594,7 @@ public final class RedisUtils {//帮助类工具类，去操作redis的对象
             redisTemplate.opsForList().set(key, index, value);
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
             return false;
         }
     }
@@ -611,7 +614,7 @@ public final class RedisUtils {//帮助类工具类，去操作redis的对象
             Long remove = redisTemplate.opsForList().remove(key, count, value);
             return remove;
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
             return 0;
         }
 

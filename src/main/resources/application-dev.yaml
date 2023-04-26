@@ -27,7 +27,7 @@ mybatis:
 # mybatis-plus 配置信息
 mybatis-plus:
   configuration:
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    log-impl: org.apache.ibatis.logging.log4j.Log4jImpl
 # 自定 设置sms参数
 ali-sms:
   access-key-id:

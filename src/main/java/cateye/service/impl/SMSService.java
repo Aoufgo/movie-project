@@ -6,6 +6,8 @@ import com.aliyun.dysmsapi20170525.Client;
 import com.aliyun.dysmsapi20170525.models.SendSmsRequest;
 import com.aliyun.dysmsapi20170525.models.SendSmsResponse;
 import com.aliyun.teautil.models.RuntimeOptions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +15,7 @@ import javax.annotation.Resource;
 
 @Service
 public class SMSService implements ISMSService {
+    private Logger logger = LoggerFactory.getLogger(getClass());
     @Value("${ali-sms.sign-name}")
     private String signName;
     @Value("${ali-sms.register-template-code}")
@@ -51,12 +54,12 @@ public class SMSService implements ISMSService {
                         60 * 30                     // 数据的有效期（单位：秒）
                 );
             } else {
-                System.out.println("信息发送失败:"+ response.getBody().getMessage());
+                logger.error("信息发送失败:"+ response.getBody().getMessage());
             }
             // 返回 响应报文体code编码
             return response.getBody().getCode();
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
             return null;
         }
     }
