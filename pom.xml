@@ -95,6 +95,11 @@
       <artifactId>java-jwt</artifactId>
       <version>3.4.0</version>
     </dependency>
+    <!--  SpringAOP  -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-aop</artifactId>
+    </dependency>
   </dependencies>
 
   <!--  打包配置  -->
