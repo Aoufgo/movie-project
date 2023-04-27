@@ -14,7 +14,7 @@ public class CategoryService implements ICategoryService {
     @Resource
     private CategoryMapper categoryMapper;
     @Override
-    @RedisCache
+    @RedisCache(duration = 60 * 60 * 24)
     public List<Category> selectAll() {
         return categoryMapper.selectList( null);
     }

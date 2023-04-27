@@ -13,7 +13,7 @@ public class FilmRegionService implements IFilmRegionService {
     @Resource
     private FilmRegionMapper filmRegionMapper;
     @Override
-    @RedisCache
+    @RedisCache(duration = 60 * 60 * 24)
     public List<FilmRegion> selectAll() {
         return filmRegionMapper.selectList(null);
     }

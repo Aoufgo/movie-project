@@ -34,10 +34,10 @@ public class RedisAspect {
     @Around( value = "@annotation(redisCache)" )
     public Object proceedAround( ProceedingJoinPoint joinPoint , RedisCache redisCache )
             throws Throwable {
-        logger.debug( "==> Redis => 开启Redis缓存策略" );
+        logger.debug( "==> {} => 开启Redis缓存策略",joinPoint.getSignature());
         ////////  --  缓存Key的生成规则  --  ////////
         // 缓存Key的颗粒度：类签名+方法名+参数
-        Map<String,Object> keyPayload = new HashMap<>();
+        Map<String,Object> keyPayload = new HashMap<>(8);
         keyPayload.put( "class" , joinPoint.getSignature().getDeclaringTypeName() );
         keyPayload.put( "method" , joinPoint.getSignature().getName() );
         keyPayload.put( "params" , joinPoint.getArgs() );
@@ -45,7 +45,7 @@ public class RedisAspect {
         String key = JSON.toJSONString( keyPayload );
         ////////  --  判断缓存是否命中  --  判断Redis中是否含有该key  ////////
         if( redisUtil.hasKey( key ) ){
-            logger.info( "==> Redis => 缓存命中，直接返回缓存数据" );
+            logger.info( "==> {} => 缓存命中，直接返回缓存数据" ,joinPoint.getSignature());
             // 获取 Redis 中 该 key 的 value 值
             Object cacheValue = "null".equals( redisUtil.get( key ).toString() ) ?
                     null :
@@ -54,16 +54,15 @@ public class RedisAspect {
             return cacheValue;
         }
         ////////  --  缓存未命中  --  ////////
-        logger.info( "==> Redis => 缓存未命中" );
-
+        logger.info( "==> {} => 缓存未命中",joinPoint.getSignature());
         // 缓存失效后,通过分布式锁来控制读写缓存的线程数,某个key只允许一个线程访问,其他线程等待
         if( redisUtil.setnx( "Mutrix - " + key , 5 ) ) {
-            logger.debug("==> Redis => 争夺到分布式锁");
-            logger.debug("==> Redis => 去数据源查询数据");
+            logger.debug("==> {} => 争夺到分布式锁",joinPoint.getSignature());
+            logger.debug("==> {} => 去数据源查询数据",joinPoint.getSignature());
             ////////  --  调用代理目标方法  --  去 数据源 查询数据  ////////
             Object data = joinPoint.proceed();
             ////////  --  生成缓存  --  将 数据源中查询到的数据 添加到 Redis缓存中  ////////
-            logger.debug("==> Redis => 生成缓存");
+            logger.debug("==> {} => 生成缓存",joinPoint.getSignature());
             if (data == null) {
                 redisUtil.set(key, "null", 5);
             } else {
@@ -76,7 +75,7 @@ public class RedisAspect {
             return data;
         }else {
             // 没有 争夺到分布式锁 等待一段时间 重新 判断缓存是否命中
-            logger.debug( "==> Redis => 没有争夺到分布式锁" );
+            logger.debug( "==> {} => 没有争夺到分布式锁",joinPoint.getSignature() );
             // 循环延时等待，直到Redis缓存成功生成
             while( true ) {
                 // 当前线程睡眠
