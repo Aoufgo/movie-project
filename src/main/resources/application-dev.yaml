@@ -35,3 +35,5 @@ ali-sms:
   endpoint:
   sign-name:
   register-template-code:
+es:
+  host-and-port:
