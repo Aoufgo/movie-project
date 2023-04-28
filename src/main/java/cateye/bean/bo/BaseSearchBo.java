@@ -8,9 +8,9 @@ package cateye.bean.bo;
  * */
 public class BaseSearchBo {
     // -- 分页条件 --
-    private Long currentPage;   // 当前页码         <= 请求参数
-    private Long pageSize;      // 每页显示记录数    <= 请求参数
-    private Long startIndex;    // 起始记录索引      <= ( currentPage - 1 ) * pageSize
+    private Long currentPage = 1L;   // 当前页码         <= 请求参数
+    private Long pageSize = 10L;      // 每页显示记录数    <= 请求参数
+    private Long startIndex = 0L;    // 起始记录索引      <= ( currentPage - 1 ) * pageSize
     private Long resultCount;   // 总记录数         <= 数据源中查询出来
     private Long pageCount;     // 总页数          <= resultCount % pageSize == 0 ? resultCount / pageSize : resultCount / pageSize + 1
 
