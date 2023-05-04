@@ -68,4 +68,19 @@ public class FilmService implements IFilmService {
         // 获取 EsResponse 对象中的 实体模型集合
         return esResponse.getData();
     }
+
+    @Override
+    public Film selectOne(Integer filmId) {
+        // 使用es获取影片详情,为了分析用户行为
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+        boolQueryBuilder.must(QueryBuilders.termQuery("film_id",filmId));
+        searchSourceBuilder.query(boolQueryBuilder);
+        EsResponse<Film> esResponse = esUtils.search("film", searchSourceBuilder, Film.class);
+        // 判断是否存在满足条件的数据
+        if(esResponse.getResultCount()>0){
+            return esResponse.getData().get(0);
+        }
+        return null;
+    }
 }

@@ -12,4 +12,11 @@ public interface IFilmService {
      * @return 影片实体模型对象集合
      */
     List<Film> selectList(FilmSearchBo filmSearchBo);
+
+    /**
+     * 根据影片编号查询一个影片信息
+     * @param filmId 要查询的影片的编号
+     * @return 影片实体模型对象
+     */
+    Film selectOne(Integer filmId);
 }
