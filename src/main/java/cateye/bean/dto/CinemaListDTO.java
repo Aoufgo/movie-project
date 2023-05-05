@@ -1,5 +1,6 @@
 package cateye.bean.dto;
 
+import cateye.bean.bo.CinemaSearchBo;
 import cateye.bean.po.Brand;
 import cateye.bean.po.China;
 import cateye.bean.po.Cinema;
@@ -11,6 +12,15 @@ public class CinemaListDTO {
     private List<China> chinaList;              // 地区列表
     private List<SpecialHall> specialHallList;  // 放映厅类型列表
     private List<Cinema> cinemaList;            // 影院列表
+    private CinemaSearchBo cinemaSearchBo;
+
+    public CinemaSearchBo getCinemaSearchBo() {
+        return cinemaSearchBo;
+    }
+
+    public void setCinemaSearchBo(CinemaSearchBo cinemaSearchBo) {
+        this.cinemaSearchBo = cinemaSearchBo;
+    }
 
     // getters and setters
     public List<Brand> getBrandList() {
