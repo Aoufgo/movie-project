@@ -8,6 +8,8 @@ public enum ResultCodeEnum {
     REDIRECT(301, "redirect"),
     // 资源未找到
     NOT_FOUND(404, "not found"),
+    // 令牌验证失败
+    UNAUTHORIZED(401, "Unauthorized"),
     // 服务器错误
     SERVER_ERROR(500,"server error"),
 

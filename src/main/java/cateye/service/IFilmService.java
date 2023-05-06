@@ -2,6 +2,7 @@ package cateye.service;
 
 import cateye.bean.bo.FilmSearchBo;
 import cateye.bean.po.Film;
+import cateye.bean.vo.FilmVo;
 
 import java.util.List;
 
@@ -19,4 +20,10 @@ public interface IFilmService {
      * @return 影片实体模型对象
      */
     Film selectOne(Integer filmId);
+    /**
+     * 根据影院编号，查询该影院正在上映的影片信息
+     * @param cinemaId 要查询的影院编号
+     * @return 影片视图模型对象集合
+     * */
+    List<FilmVo> selectFilmVoListByCinemaId(Integer cinemaId );
 }

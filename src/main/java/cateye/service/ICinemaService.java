@@ -2,6 +2,7 @@ package cateye.service;
 
 import cateye.bean.bo.CinemaSearchBo;
 import cateye.bean.po.Cinema;
+import cateye.bean.vo.FilmVo;
 
 import java.util.List;
 

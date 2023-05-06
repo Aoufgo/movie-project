@@ -4,10 +4,7 @@ import cateye.bean.bo.CinemaSearchBo;
 import cateye.bean.dto.CinemaDTO;
 import cateye.bean.dto.CinemaListDTO;
 import cateye.response.ResultResponse;
-import cateye.service.impl.BrandService;
-import cateye.service.impl.ChinaService;
-import cateye.service.impl.CinemaService;
-import cateye.service.impl.SpecialHallService;
+import cateye.service.impl.*;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -23,6 +20,8 @@ public class CinemaController {
     private SpecialHallService specialHallService;
     @Resource
     private CinemaService cinemaService;
+    @Resource
+    private FilmService filmService;
     @PostMapping("/_select")
     public Object cinemaList(CinemaSearchBo cinemaSearchBo){
         CinemaListDTO cinemaListDTO = new CinemaListDTO();
@@ -39,6 +38,7 @@ public class CinemaController {
         CinemaDTO cinemaDTO = new CinemaDTO();
         // 获取影院信息
         cinemaDTO.setCinema(cinemaService.selectOne(id));
+        cinemaDTO.setFilmVoList(filmService.selectFilmVoListByCinemaId(id));
         return ResultResponse.success(cinemaDTO);
 
     }

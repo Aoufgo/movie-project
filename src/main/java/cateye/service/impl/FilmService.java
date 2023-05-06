@@ -2,10 +2,19 @@ package cateye.service.impl;
 
 import cateye.aop.annotation.RedisCache;
 import cateye.bean.bo.FilmSearchBo;
+import cateye.bean.po.CinemaFilmRel;
 import cateye.bean.po.Film;
+import cateye.bean.po.WatchTimes;
+import cateye.bean.vo.FilmVo;
+import cateye.bean.vo.WatchDateVo;
 import cateye.es.EsResponse;
 import cateye.es.EsUtils;
+import cateye.mapper.CinemaFilmRelMapper;
+import cateye.mapper.FilmMapper;
+import cateye.mapper.WatchTimesMapper;
 import cateye.service.IFilmService;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
@@ -13,12 +22,19 @@ import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class FilmService implements IFilmService {
     @Resource
     private EsUtils esUtils;
+    @Resource
+    private CinemaFilmRelMapper cinemaFilmRelMapper;
+    @Resource
+    private FilmMapper filmMapper;
+    @Resource
+    private WatchTimesMapper watchTimesMapper;
     @Override
     @RedisCache(duration = 60*60)
     public List<Film> selectList(FilmSearchBo filmSearchBo) {
@@ -82,5 +98,55 @@ public class FilmService implements IFilmService {
             return esResponse.getData().get(0);
         }
         return null;
+    }
+
+    @Override
+    @RedisCache(duration = 60 * 5)
+    public List<FilmVo> selectFilmVoListByCinemaId(Integer cinemaId) {
+        List<FilmVo> filmVoList = new ArrayList<>();
+        // 根据影院id获取电影列表
+        LambdaQueryWrapper<CinemaFilmRel> filmLambdaQueryWrapper = Wrappers.lambdaQuery();
+        filmLambdaQueryWrapper.eq(CinemaFilmRel::getCmaId,cinemaId);
+        List<CinemaFilmRel> cinemaFilmRelList = cinemaFilmRelMapper.selectList(filmLambdaQueryWrapper);
+        // 根据关联表获取filmId
+        for (CinemaFilmRel cinemaFilmRel : cinemaFilmRelList) {
+            Integer filmId = cinemaFilmRel.getFilmId();
+            // filmVo
+            FilmVo filmVo = new FilmVo();
+            // 获取film信息
+            Film film = filmMapper.selectById(filmId);
+            // 根据filmId和cinemaId获取排片表
+            LambdaQueryWrapper<WatchTimes> watchTimesWrapper = Wrappers.lambdaQuery();
+            watchTimesWrapper.eq(WatchTimes::getCmaId,cinemaId);
+            watchTimesWrapper.eq(WatchTimes::getFilmId,filmId);
+            List<WatchTimes> watchTimesList = watchTimesMapper.selectList(watchTimesWrapper);
+            // 实例化watchDate
+            List<WatchDateVo> watchDateVoList = new ArrayList<>();
+            for (WatchTimes watchTimes : watchTimesList) {
+                // 设置flag是否存在该日期
+                boolean isNewDay = true;
+                for (WatchDateVo watchDateVo : watchDateVoList) {
+                    if (watchTimes.getWdDate().equals(watchDateVo.getDate())){
+                         watchDateVo.getWatchTimeList().add(watchTimes);
+                         isNewDay = false;
+                         break;
+                    }
+                }
+                if (isNewDay){
+                    WatchDateVo watchDateVo = new WatchDateVo();
+                    watchDateVo.setDate(watchTimes.getWdDate());
+                    // 实例化一个WatchTimeList
+                    watchDateVo.setWatchTimeList(new ArrayList<>());
+                    watchDateVo.getWatchTimeList().add(watchTimes);
+                    // 添加vo
+                    watchDateVoList.add(watchDateVo);
+                }
+            }
+            filmVo.setFilm(film);
+            filmVo.setWatchDateVoList(watchDateVoList);
+            filmVoList.add(filmVo);
+
+        }
+        return filmVoList;
     }
 }

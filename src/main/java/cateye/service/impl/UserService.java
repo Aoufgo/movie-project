@@ -91,7 +91,7 @@ public class UserService implements IUserService {
                 // 使用秘钥签发令牌
                 .sign(Algorithm.HMAC256(userInfo.getUserId().toString()));
         // token存入redis
-        redisUtils.set("USER.Bearer " + token, userInfo, 60 * 24);
+        redisUtils.set("Bearer " + token, userInfo, 60 * 24);
         // 返回token
         return token;
     }
