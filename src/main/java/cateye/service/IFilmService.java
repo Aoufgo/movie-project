@@ -26,4 +26,10 @@ public interface IFilmService {
      * @return 影片视图模型对象集合
      * */
     List<FilmVo> selectFilmVoListByCinemaId(Integer cinemaId );
+    /**
+     * 根据影片编号，从DB中查询一个影片信息
+     * @param filmId 要查询的影片的编号
+     * @return 影片实体模型对象
+     * */
+    Film selectOneFromDB( Integer filmId );
 }

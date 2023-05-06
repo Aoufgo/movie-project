@@ -15,9 +15,16 @@ public interface ICinemaService {
     List<Cinema> selectList(CinemaSearchBo cinemaSearchBo );
 
     /**
-     * 根据影院编号，查询一个影院信息
+     * 根据影院编号，从es中查询一个影院信息
      * @param cinemaId 要查询的影院编号
      * @return 影院实体模型对象
      * */
     Cinema selectOne( Integer cinemaId );
+    /**
+     * 根据影院编号，从数据库查询一个影院信息
+     * @param cinemaId 要查询的影院编号
+     * @return 影院实体模型对象
+     * */
+    Cinema selectOneFromDB( Integer cinemaId );
+
 }

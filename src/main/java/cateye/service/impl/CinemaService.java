@@ -6,6 +6,7 @@ import cateye.bean.po.Cinema;
 import cateye.bean.vo.FilmVo;
 import cateye.es.EsResponse;
 import cateye.es.EsUtils;
+import cateye.mapper.CinemaMapper;
 import cateye.service.ICinemaService;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -20,6 +21,8 @@ import java.util.List;
 public class CinemaService implements ICinemaService {
     @Resource
     private EsUtils esUtils;
+    @Resource
+    private CinemaMapper cinemaMapper;
 
     @Override
     @RedisCache(duration = 60 * 60 * 24)
@@ -74,5 +77,11 @@ public class CinemaService implements ICinemaService {
             return cinemaEsResponse.getData().get(0);
         }
         return null;
+    }
+
+    @Override
+    @RedisCache( duration = 60 * 60 * 24 )
+    public Cinema selectOneFromDB(Integer cinemaId) {
+        return cinemaMapper.selectById( cinemaId );
     }
 }

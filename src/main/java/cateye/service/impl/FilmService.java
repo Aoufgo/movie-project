@@ -149,4 +149,10 @@ public class FilmService implements IFilmService {
         }
         return filmVoList;
     }
+
+    @Override
+    @RedisCache( duration = 60 * 60 * 24 )
+    public Film selectOneFromDB(Integer filmId) {
+        return filmMapper.selectById( filmId );
+    }
 }
